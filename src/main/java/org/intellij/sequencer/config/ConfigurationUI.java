@@ -140,7 +140,16 @@ public class ConfigurationUI implements ActionListener {
             handleColor(_interfaceColor);
         else if(e.getActionCommand().equals("addExcludeEntry")) {
             String excludeName = JOptionPane.showInputDialog(_mainPanel,
-                  "Enter package or class name.\nFor example, java.lang.* or java.io.PrintStream:", "Exclude Entry",
+                  "Enter package or class name.\n" +
+                          "For example, java.lang.* or java.io.PrintStream\n" +
+                          "Or use regex inclusions/exclusions\n" +
+                          "include only:\n" +
+                          "    +c:java.* - analyze only classes from java package\n" +
+                          "    +m:get.* - analyze only methods starting with get\n" +
+                          "exclude:\n" +
+                          "    -c:.*guava.* - exclude classes from Guava\n" +
+                          "    -m:get.* - exclude getters\n" +
+                    "Exclude Entry",
                   JOptionPane.PLAIN_MESSAGE);
             if(excludeName != null && excludeName.trim().length() != 0)
                 _excludeTableModel.addExcludeEntry(excludeName, true);

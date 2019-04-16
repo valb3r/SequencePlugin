@@ -93,7 +93,7 @@ public class ShowSequenceAction extends AnAction {
 
             gc.gridx = 1;
             gc.anchor = GridBagConstraints.CENTER;
-            jSpinner = new JSpinner(new SpinnerNumberModel(_callDepth, 1, 10, 1));
+            jSpinner = new JSpinner(new SpinnerNumberModel(_callDepth, 1, 100, 1));
             jLabel.setLabelFor(jSpinner);
             add(jSpinner, gc);
 

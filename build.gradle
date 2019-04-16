@@ -6,16 +6,16 @@ plugins {
 //apply plugin: 'java'
 
 intellij {
-    version '14.1.2'
-    pluginName 'SequenceDiagram'
+    version '2019.1'
+    pluginName 'SequenceDiagram-V2'
     plugins = []
     updateSinceUntilBuild false
     sandboxDirectory = "${project.rootDir}/.sandbox"
 }
 
 publishPlugin {
-    username publishUsername
-    password publishPassword
+    username "1"
+    password "1"
 }
 
 group 'vanstudio'

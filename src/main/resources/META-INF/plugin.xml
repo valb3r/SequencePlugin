@@ -1,6 +1,6 @@
 <idea-plugin>
-    <id>SequenceDiagram</id>
-    <name>SequenceDiagram</name>
+    <id>SequenceDiagram-V2</id>
+    <name>SequenceDiagram-V2</name>
     <description><![CDATA[
 <h3>SequenceDiagram for IntelliJ IDEA</h3>
 <a href="http://vanco.github.io/SequencePlugin">http://vanco.github.io/SequencePlugin.</a>
@@ -19,7 +19,7 @@ Simple Sequence Diagram Generator. fixed version of SequencePlugin , work from 1
 The original version SequencePlugin come from ksibilev@yahoo.com.</p>
 
 ]]></description>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
     <vendor>fanhuagang@gmail.com</vendor>
     <idea-version since-build="141.1"/>
 
@@ -79,7 +79,7 @@ The original version SequencePlugin come from ksibilev@yahoo.com.</p>
     <actions>
         <action id="SequencePlugin.ShowSequenceDiagram" class="org.intellij.sequencer.ShowSequenceAction"
                 icon="SequencePluginIcons.SEQUENCE_ICON"
-                text="Sequence Diagram..." description="Generate sequence diagram of the current method">
+                text="Sequence Diagram [V2]..." description="Generate sequence diagram of the current method">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>

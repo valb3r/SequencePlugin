@@ -9,6 +9,7 @@ import com.intellij.util.ui.UIUtil;
 import icons.SequencePluginIcons;
 import org.intellij.sequencer.diagram.*;
 import org.intellij.sequencer.generator.CallStack;
+import org.intellij.sequencer.generator.PlantUmlGenerator;
 import org.intellij.sequencer.generator.SequenceGenerator;
 import org.intellij.sequencer.generator.SequenceParams;
 import org.intellij.sequencer.generator.filters.ImplementClassFilter;
@@ -53,6 +54,7 @@ public class SequencePanel extends JPanel {
         actionGroup.add(new ReGenerateAction());
         actionGroup.add(new ExportAction());
         actionGroup.add(new ExportTextAction());
+        actionGroup.add(new ExportPlantUmlAction());
 
         ActionManager actionManager = ActionManager.getInstance();
         ActionToolbar actionToolbar = actionManager.createActionToolbar("SequencerToolbar", actionGroup, false);
@@ -106,6 +108,21 @@ public class SequencePanel extends JPanel {
 
         Files.write(selectedFile.toPath(),
                 callStack.generateText().getBytes(),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING);
+
+    }
+
+    public void generatePumlFile(File selectedFile) throws IOException {
+        if (_psiMethod == null || !_psiMethod.isValid()) { // || !_psiMethod.isPhysical()
+            _psiMethod = null;
+            return;
+        }
+        SequenceGenerator generator = new SequenceGenerator(_sequenceParams);
+        final CallStack callStack = generator.generate(_psiMethod);
+
+        Files.write(selectedFile.toPath(),
+                new PlantUmlGenerator(callStack).generate().getBytes(),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.TRUNCATE_EXISTING);
 
@@ -237,6 +254,39 @@ public class SequencePanel extends JPanel {
                         selectedFile = new File(selectedFile.getParentFile(), selectedFile.getName() + ".txt");
 
                     generateTextFile(selectedFile);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(SequencePanel.this, e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private class ExportPlantUmlAction extends AnAction {
+
+        public ExportPlantUmlAction() {
+            super("Export PlantUML", "Export diagram as PlantUML", SequencePluginIcons.EXPORT_TEXT_ICON);
+        }
+        @Override
+        public void actionPerformed(AnActionEvent event) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+            fileChooser.setFileFilter(new FileFilter() {
+                public boolean accept(File f) {
+                    return f.isDirectory() || f.getName().endsWith("puml");
+                }
+
+                public String getDescription() {
+                    return "PUML File";
+                }
+            });
+            try {
+                if (fileChooser.showSaveDialog(SequencePanel.this) == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    if (!selectedFile.getName().endsWith("puml"))
+                        selectedFile = new File(selectedFile.getParentFile(), selectedFile.getName() + ".puml");
+
+                    generatePumlFile(selectedFile);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
